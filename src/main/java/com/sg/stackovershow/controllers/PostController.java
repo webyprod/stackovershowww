@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sg.stackovershow.dtos.CreatePostDto;
 import com.sg.stackovershow.entities.Post;
 import com.sg.stackovershow.entities.User;
 import com.sg.stackovershow.services.PostService;
@@ -35,6 +36,15 @@ public class PostController {
 		return new ResponseEntity<>(posts, HttpStatus.OK);
 	}
 	
+	@GetMapping("/user/{username}")
+	public ResponseEntity<?> getPostByUsername(@PathVariable("username") String username){
+		List<Post> posts = postService.getPostByUsername(username);
+		if (posts.equals(null)){
+            return new ResponseEntity<>("No post found for this username", HttpStatus.OK);
+        }
+		return new ResponseEntity<>(posts, HttpStatus.OK);
+	}
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getPostById(@PathVariable("id") Long id){
 		Post post = postService.getPostById(id);
@@ -44,22 +54,13 @@ public class PostController {
 		return new ResponseEntity<>(post, HttpStatus.OK);
 	}
 	
-	@GetMapping("/{username}")
-	public ResponseEntity<?> getPostByUsername(@PathVariable("username") String username){
-		List<Post> posts = postService.getPostByUsername(username);
-		if (posts.equals(null)){
-            return new ResponseEntity<>("No post found for this username", HttpStatus.BAD_REQUEST);
-        }
-		return new ResponseEntity<>(posts, HttpStatus.OK);
-	}
-	
 	@PostMapping("/new")
 	public ResponseEntity<?> savePost(@RequestBody HashMap<String, String> data){
+		CreatePostDto postDto = new CreatePostDto(data.get("subject"), data.get("message"), data.get("username"));
 		User user = userService.findUserByUsername(data.get("username"));
 		user.addPosts(new Post(data.get("subject"), data.get("message"), data.get("username")));
-		Post post = new Post(data.get("subject"), data.get("message"), data.get("username"));
-		postService.savePost(post);
-		return new ResponseEntity<>(post, HttpStatus.OK);
+		postService.savePost(postDto);
+		return new ResponseEntity<>(postDto, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{id}")

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sg.stackovershow.dtos.CreatePostDto;
 import com.sg.stackovershow.entities.Post;
 import com.sg.stackovershow.repositories.PostRepository;
 
@@ -14,8 +15,12 @@ public class PostService {
 	@Autowired
     private PostRepository postRepo;
 	
-	public void savePost(Post post) {
-		postRepo.save(post);
+	public void savePost(CreatePostDto postDto) {
+		Post newPost = new Post();
+		newPost.setMessage(postDto.getMessage());
+		newPost.setSubject(postDto.getSubject());
+		newPost.setUser(postDto.getUsername());
+		postRepo.save(newPost);
 	}
 	
 	public List<Post> getPosts() {

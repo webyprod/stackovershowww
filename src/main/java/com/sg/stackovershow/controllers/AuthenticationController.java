@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sg.stackovershow.dtos.CreateAccountDto;
-import com.sg.stackovershow.dtos.LoginDto;
 import com.sg.stackovershow.entities.User;
 import com.sg.stackovershow.jwt.JwtTokenProvider;
 import com.sg.stackovershow.services.AuthenticationService;
