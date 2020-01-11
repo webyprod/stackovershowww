@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
@@ -56,6 +57,9 @@ public class User implements Serializable {
 	
 	@OneToMany
 	private List<Comment> comments;
+	
+	@Transient
+    private String token;
 	
 	
 	public User() {}
@@ -140,6 +144,16 @@ public class User implements Serializable {
 
 	public void addComments(Comment comment) {
 		this.comments.add(comment);
+	}
+
+
+	public String getToken() {
+		return token;
+	}
+
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 	
 	
