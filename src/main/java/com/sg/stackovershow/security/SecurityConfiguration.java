@@ -36,7 +36,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
     public void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.cors().and()
                 .authorizeRequests()
-                .antMatchers("/auth/**", "/user/all").permitAll()
+                .antMatchers("/auth/**", "/user/all", "/post/all").permitAll()
                 .anyRequest().fullyAuthenticated()
                 .and()
     			.logout().permitAll()
@@ -53,7 +53,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	
 	
 	@Override
-	public void configurer(AuthenticationManagerBuilder manager) throws Exception {
+	public void configure(AuthenticationManagerBuilder manager) throws Exception {
 		manager.userDetailsService(userDetailsService).passwordEncoder(encoder());
 	}
 	

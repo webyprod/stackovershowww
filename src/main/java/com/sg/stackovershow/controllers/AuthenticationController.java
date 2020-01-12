@@ -30,7 +30,7 @@ public class AuthenticationController {
 	@Autowired
 	private UserService userService;
 	 
-    @PostMapping("/signup")
+    @PostMapping("/register")
     public ResponseEntity signup(@RequestBody CreateAccountDto create) {
         authService.signup(create);
         return new ResponseEntity(HttpStatus.OK);

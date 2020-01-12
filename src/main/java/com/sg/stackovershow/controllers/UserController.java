@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sg.stackovershow.entities.Post;
 import com.sg.stackovershow.entities.User;
 import com.sg.stackovershow.repositories.UserRepository;
+import com.sg.stackovershow.services.PostService;
 import com.sg.stackovershow.services.UserService;
 
 @RestController
@@ -21,6 +23,9 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private PostService postService;
 	
 	@GetMapping("/all")
 	public ResponseEntity<?> getAll() {
@@ -37,6 +42,15 @@ public class UserController {
             return new ResponseEntity<>("No user found for this username", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(newUser, HttpStatus.OK);
+	}
+	
+	@GetMapping("/{username}/posts")
+	public ResponseEntity<?> getPostByUsername(@PathVariable("username") String username){
+		List<Post> posts = postService.getPostByUsername(username);
+		if (posts.equals(null)){
+            return new ResponseEntity<>("No post found for this username", HttpStatus.OK);
+        }
+		return new ResponseEntity<>(posts, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{username}")

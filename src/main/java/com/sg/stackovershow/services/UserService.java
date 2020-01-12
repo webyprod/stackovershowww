@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sg.stackovershow.entities.Post;
 import com.sg.stackovershow.entities.User;
 import com.sg.stackovershow.repositories.UserRepository;
 
@@ -18,6 +19,11 @@ public class UserService {
 	public User findUserByUsername(String username) {
         return userRepo.findByUsername(username);
     }
+	
+	public void savePost(User user, Post post) {
+		user.addPosts(post);
+		userRepo.save(user);
+	}
 	
 	public List<User> getUsers() {
         return userRepo.findAll();

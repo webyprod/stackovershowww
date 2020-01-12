@@ -36,15 +36,6 @@ public class PostController {
 		return new ResponseEntity<>(posts, HttpStatus.OK);
 	}
 	
-	@GetMapping("/user/{username}")
-	public ResponseEntity<?> getPostByUsername(@PathVariable("username") String username){
-		List<Post> posts = postService.getPostByUsername(username);
-		if (posts.equals(null)){
-            return new ResponseEntity<>("No post found for this username", HttpStatus.OK);
-        }
-		return new ResponseEntity<>(posts, HttpStatus.OK);
-	}
-	
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getPostById(@PathVariable("id") Long id){
 		Post post = postService.getPostById(id);
@@ -58,7 +49,8 @@ public class PostController {
 	public ResponseEntity<?> savePost(@RequestBody HashMap<String, String> data){
 		CreatePostDto postDto = new CreatePostDto(data.get("subject"), data.get("message"), data.get("username"));
 		User user = userService.findUserByUsername(data.get("username"));
-		user.addPosts(new Post(data.get("subject"), data.get("message"), data.get("username")));
+		Post newPost = new Post(data.get("subject"), data.get("message"), data.get("username"));
+		userService.savePost(user, newPost);
 		postService.savePost(postDto);
 		return new ResponseEntity<>(postDto, HttpStatus.OK);
 	}
