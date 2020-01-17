@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -29,6 +30,22 @@ public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long userId;
+	
+	@Convert(converter = BooleanConverter.class)
+    @Column(length = 1, nullable = false)
+    private boolean enabled;
+
+    @Convert(converter = BooleanConverter.class)
+    @Column(length = 1, nullable = false)
+    private boolean accountNonExpired;
+
+    @Convert(converter = BooleanConverter.class)
+    @Column(length = 1, nullable = false)
+    private boolean accountNonLocked;
+
+    @Convert(converter = BooleanConverter.class)
+    @Column(length = 1, nullable = false)
+    private boolean credentialsNonExpired;
 	
 	@NotEmpty(message = "Name is required")
 	@Column(name="name")

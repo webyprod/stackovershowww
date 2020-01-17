@@ -18,7 +18,6 @@ import com.sg.stackovershow.services.AuthenticationService;
 import com.sg.stackovershow.services.UserService;
 
 @RestController
-@RequestMapping("/auth")
 public class AuthenticationController {
 	
 	@Autowired
@@ -30,13 +29,13 @@ public class AuthenticationController {
 	@Autowired
 	private UserService userService;
 	 
-    @PostMapping("/register")
+    @PostMapping("/api/user/registration")
     public ResponseEntity signup(@RequestBody CreateAccountDto create) {
         authService.signup(create);
         return new ResponseEntity(HttpStatus.OK);
     }
     
-    @PostMapping("/login")
+    @PostMapping("/api/user/login")
     public ResponseEntity login (Principal p) {
     	if(p==null || p.getName()==null) {
 			return ResponseEntity.ok(p);
