@@ -59,6 +59,12 @@ public class User implements Serializable {
 	@OneToMany
 	private List<Comment> comments;
 	
+//	private Boolean account_non_expired=false;
+//	private Boolean account_non_locked=false;
+//	private Boolean credentials_non_expired=false;
+//	private Boolean enabled=false;
+	
+	
 	@Transient
     private String token;
 	
