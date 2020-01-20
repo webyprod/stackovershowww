@@ -31,22 +31,6 @@ public class User implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long userId;
 	
-	@Convert(converter = BooleanConverter.class)
-    @Column(length = 1, nullable = false)
-    private boolean enabled;
-
-    @Convert(converter = BooleanConverter.class)
-    @Column(length = 1, nullable = false)
-    private boolean accountNonExpired;
-
-    @Convert(converter = BooleanConverter.class)
-    @Column(length = 1, nullable = false)
-    private boolean accountNonLocked;
-
-    @Convert(converter = BooleanConverter.class)
-    @Column(length = 1, nullable = false)
-    private boolean credentialsNonExpired;
-	
 	@NotEmpty(message = "Name is required")
 	@Column(name="name")
 	private String name;

@@ -29,13 +29,13 @@ public class AuthenticationController {
 	@Autowired
 	private UserService userService;
 	 
-    @PostMapping("/api/user/registration")
+    @PostMapping("/auth/registration")
     public ResponseEntity signup(@RequestBody CreateAccountDto create) {
         authService.signup(create);
         return new ResponseEntity(HttpStatus.OK);
     }
     
-    @PostMapping("/api/user/login")
+    @PostMapping("/auth/login")
     public ResponseEntity login (Principal p) {
     	if(p==null || p.getName()==null) {
 			return ResponseEntity.ok(p);

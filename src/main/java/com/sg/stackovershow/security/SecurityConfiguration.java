@@ -36,13 +36,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
     public void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.cors().and()
                 .authorizeRequests()
-                .antMatchers("/resources/**", "/error", "/user/all", "/post/all", "/api/user/**").permitAll()
+                .antMatchers("/resources/**", "/error", "/user/all", "/post/all", "/auth/**").permitAll()
                 .anyRequest().fullyAuthenticated()
                 .and()
     			.logout().permitAll()
-    			.logoutRequestMatcher(new AntPathRequestMatcher("/api/user/logout", "POST"))
+    			.logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout", "POST"))
     			.and()
-    			.formLogin().loginPage("/api/user/login")
+    			.formLogin().loginPage("/auth/login")
     			.and()
     			.httpBasic()
     			.and().csrf().disable();
