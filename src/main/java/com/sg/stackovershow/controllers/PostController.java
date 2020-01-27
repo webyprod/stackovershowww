@@ -23,7 +23,6 @@ import com.sg.stackovershow.services.UserService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
-@RequestMapping("/post")
 public class PostController {
 	
 	@Autowired
@@ -32,13 +31,13 @@ public class PostController {
 	@Autowired
 	private UserService userService;
 	
-	@GetMapping("/all")
+	@GetMapping("/posts/all")
 	public ResponseEntity<?> getAllPosts(){
 		List<Post> posts = postService.getPosts();
 		return new ResponseEntity<>(posts, HttpStatus.OK);
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("/post/{id}")
 	public ResponseEntity<?> getPostById(@PathVariable("id") Long id){
 		Post post = postService.getPostById(id);
 		if (post.equals(null)){
@@ -47,7 +46,7 @@ public class PostController {
 		return new ResponseEntity<>(post, HttpStatus.OK);
 	}
 	
-	@PostMapping("/new")
+	@PostMapping("/post/new")
 	public ResponseEntity<?> savePost(@RequestBody HashMap<String, String> data){
 		CreatePostDto postDto = new CreatePostDto(data.get("subject"), data.get("message"), data.get("username"));
 		User user = userService.findUserByUsername(data.get("username"));
@@ -57,7 +56,7 @@ public class PostController {
 		return new ResponseEntity<>(postDto, HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/post/{id}")
 	public ResponseEntity<?> deletePostById(@PathVariable("id") Long id){
 		Post post = postService.getPostById(id);
 		if (post.equals(null)){

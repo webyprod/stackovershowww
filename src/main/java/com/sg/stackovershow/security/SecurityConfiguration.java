@@ -36,7 +36,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
     public void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.cors().and()
                 .authorizeRequests()
-                .antMatchers("/resources/**", "/error", "/user/all", "/post/all", "/auth/**").permitAll()
+                .antMatchers("/resources/**", "/error", "/users/all", "/posts/all", "/auth/**").permitAll()
                 .anyRequest().fullyAuthenticated()
                 .and()
     			.logout().permitAll()

@@ -20,7 +20,6 @@ import com.sg.stackovershow.services.UserService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
-@RequestMapping("/user")
 public class UserController {
 	
 	@Autowired
@@ -29,14 +28,14 @@ public class UserController {
 	@Autowired
 	private PostService postService;
 	
-	@GetMapping("/all")
+	@GetMapping("/users/all")
 	public ResponseEntity<?> getAll() {
 		List<User> users = userService.getUsers();
 		return new ResponseEntity<>(users, HttpStatus.OK);
 	}
 	
 	
-	@GetMapping("/{username}")
+	@GetMapping("/user/{username}")
 	public ResponseEntity<?> getUserByUsername(@PathVariable("username") String username){
 		User newUser = new User();
 		newUser = userService.findUserByUsername(username);
@@ -55,7 +54,7 @@ public class UserController {
 		return new ResponseEntity<>(posts, HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/{username}")
+	@DeleteMapping("/user/{username}")
 	public ResponseEntity<?> deleteUser(@PathVariable("username") String username){
 		
 		User user = userService.findUserByUsername(username);
