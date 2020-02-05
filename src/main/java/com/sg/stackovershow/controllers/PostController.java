@@ -37,7 +37,7 @@ public class PostController {
 		return new ResponseEntity<>(posts, HttpStatus.OK);
 	}
 	
-	@GetMapping("/post/{id}")
+	@GetMapping("/onepost/{id}")
 	public ResponseEntity<?> getPostById(@PathVariable("id") Long id){
 		Post post = postService.getPostById(id);
 		if (post.equals(null)){
