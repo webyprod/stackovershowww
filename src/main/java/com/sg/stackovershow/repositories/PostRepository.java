@@ -3,9 +3,11 @@ package com.sg.stackovershow.repositories;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sg.stackovershow.entities.Post;
 import com.sg.stackovershow.entities.User;
@@ -22,6 +24,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 	@Query("SELECT p FROM Post p where p.username=:username order by p.publishDate desc")
     public List<Post> findByUsername(@Param("username")String username);
 	
+	@Transactional
+	@Modifying
 	@Query("DELETE Post where postId=:id")
     public void deletePostById(@Param("id") Long id);
 	

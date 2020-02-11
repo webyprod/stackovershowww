@@ -2,21 +2,28 @@ package com.sg.stackovershow.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -35,56 +42,57 @@ public class User implements Serializable {
 	@Column(name="name")
 	private String name;
 	
+	@Size(max = 20)
 	@NotEmpty(message = "Username is required")
 	@Column(name="username")
 	private String username;
 	
 	@Email
+	@Size(max = 50)
 	@NotEmpty(message = "Email is required")
 	@Column(name="email")
 	private String email;
 	
+	@Size(max = 120)
 	@NotEmpty(message = "Password is required")
 	@Column(name="password")
 	private String password;
 	
-	@Enumerated(EnumType.STRING)
-	@Column(name="role")
-	private Role role;
+	@ManyToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL )
+	@JoinTable(	name = "user_roles", 
+				joinColumns = @JoinColumn(name = "user_id"), 
+				inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<Roles> roles = new HashSet<>();
 	
-	@OneToMany
+	@OneToMany(cascade=CascadeType.ALL)
 	@JoinColumn(name = "userId")
 	private List<Post> posts;
 	
-	@OneToMany
-	private List<Comment> comments;
-	
-//	private Boolean account_non_expired=false;
-//	private Boolean account_non_locked=false;
-//	private Boolean credentials_non_expired=false;
-//	private Boolean enabled=false;
-	
-	
-	@Transient
-    private String token;
-	
+//	@OneToMany
+//	private List<Comment> comments;
 	
 	public User() {}
 
-
-	public User(String name, String username, String email,String password, Role role) {
+	public User(String name, String username, String email,String password) {
 		super();
 		this.name = name;
 		this.username = username;
 		this.email = email;
 		this.password = password;
-		this.role = role;
 		posts = new ArrayList<>();
-		comments = new ArrayList<>();
+		//comments = new ArrayList<>();
+	}
+	
+	public Long getId() {
+		return userId;
+	}
+
+	public void setId(Long id) {
+		this.userId = id;
 	}
 
 
-	public String getName() {
+	public String getNames() {
 		return name;
 	}
 
@@ -124,13 +132,12 @@ public class User implements Serializable {
 	}
 
 
-	public Role getRole() {
-		return role;
+	public Set<Roles> getRoles() {
+		return roles;
 	}
 
-
-	public void setRole(Role role) {
-		this.role = role;
+	public void setRoles(Set<Roles> roles2) {
+		this.roles = roles2;
 	}
 
 
@@ -144,27 +151,12 @@ public class User implements Serializable {
 	}
 
 
-	public List<Comment> getComments() {
-		return comments;
-	}
-
-
-	public void addComments(Comment comment) {
-		this.comments.add(comment);
-	}
-
-
-	public String getToken() {
-		return token;
-	}
-
-
-	public void setToken(String token) {
-		this.token = token;
-	}
-	
-	
-	
-	
-	
+//	public List<Comment> getComments() {
+//		return comments;
+//	}
+//
+//
+//	public void addComments(Comment comment) {
+//		this.comments.add(comment);
+//	}	
 }

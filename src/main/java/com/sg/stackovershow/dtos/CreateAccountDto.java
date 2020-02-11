@@ -1,23 +1,39 @@
 package com.sg.stackovershow.dtos;
 
+import java.util.Set;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 public class CreateAccountDto {
 
 	private String name;
 	
-	private String username;
-	
+	@NotBlank
+    @Size(min = 3, max = 20)
+    private String username;
+ 
+    @NotBlank
+    @Size(max = 50)
+    @Email
     private String email;
     
+    private Set<String> roles;
+    
+    @NotBlank
+    @Size(min = 6, max = 40)
     private String password;
     
     public CreateAccountDto() {}
 
-	public CreateAccountDto(String name, String username, String email, String password) {
+	public CreateAccountDto(String name, String username, String email, String password, Set<String> role) {
 		super();
 		this.name = name;
 		this.username = username;
 		this.email = email;
 		this.password = password;
+		this.roles = role;
 	}
 
 	public String getName() {
@@ -52,9 +68,12 @@ public class CreateAccountDto {
 		this.password = password;
 	}
 
-	@Override
-	public String toString() {
-		return "createAccountDto [username=" + username + ", email=" + email + ", password=" + password + "]";
+	public Set<String> getRole() {
+		return this.roles;
+	}
+	
+	public void setRole(Set<String> role) {
+		this.roles = role;
 	}
 	
 	

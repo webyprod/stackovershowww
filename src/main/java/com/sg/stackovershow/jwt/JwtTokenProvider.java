@@ -14,72 +14,67 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import com.sg.stackovershow.security.UserDetailsSecurity;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
+
+import io.jsonwebtoken.*;
+
 
 
 @Component
 public class JwtTokenProvider {
 	
 	
+	private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
+
 	@Value("${app.jwt.secret}")
-    private String jwtSecret;
+	private String jwtSecret;
 
-    @Value("${app.jwt.token.prefix}")
-    private String jwtTokenPrefix;
+	@Value("${app.jwt.jwtExpirationMs}")
+	private int jwtExpirationMs;
 
-    @Value("${app.jwt.header.string}")
-    private String jwtHeaderString;
+	public String generateJwtToken(Authentication authentication) {
 
-    @Value("${app.jwt.expiration-in-ms}")
-    private Long jwtExpirationInMs;
-    
-    public String generateToken(Authentication auth){
-        String authorities = auth.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining());
+		UserDetailsSecurity userPrincipal = (UserDetailsSecurity) authentication.getPrincipal();
 
-        return Jwts.builder().setSubject(auth.getName())
-                .claim("roles", authorities)
-                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationInMs))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
-    }
-    
-    
-    public Authentication getAuthentication(HttpServletRequest request){
-        String token = resolveToken(request);
-        if(token == null){
-            return null;
-        }
-        Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
-        String username = claims.getSubject();
-        final List<GrantedAuthority> authorities = Arrays.stream(claims.get("roles").toString().split(","))
-                .map(role -> role.startsWith("ROLE_")?role:"ROLE_"+role)
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-        return username!= null ? new UsernamePasswordAuthenticationToken(username, null, authorities): null;
-    }
-    
-    public boolean validateToken(HttpServletRequest request){
-        String token = resolveToken(request);
-        if(token == null){
-            return false;
-        }
-        Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
-        if(claims.getExpiration().before(new Date())){
-            return false;
-        }
-        return true;
-    }
-    
-    private String resolveToken(HttpServletRequest req){
-        //Bearer key...
-        String bearerToken = req.getHeader(jwtHeaderString);
-        if(bearerToken!=null && bearerToken.startsWith(jwtTokenPrefix)){
-            return bearerToken.substring(7, bearerToken.length());
-        }
-        return null;
-    }
+		return Jwts.builder()
+				.setSubject((userPrincipal.getUsername()))
+				.setIssuedAt(new Date())
+				.setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+				.signWith(SignatureAlgorithm.HS512, jwtSecret)
+				.compact();
+	}
+
+	public String getUserNameFromJwtToken(String token) {
+		return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
+	}
+
+	public boolean validateJwtToken(String authToken) {
+		try {
+			Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+			return true;
+		} catch (SignatureException e) {
+			logger.error("Invalid JWT signature: {}", e.getMessage());
+		} catch (MalformedJwtException e) {
+			logger.error("Invalid JWT token: {}", e.getMessage());
+		} catch (ExpiredJwtException e) {
+			logger.error("JWT token is expired: {}", e.getMessage());
+		} catch (UnsupportedJwtException e) {
+			logger.error("JWT token is unsupported: {}", e.getMessage());
+		} catch (IllegalArgumentException e) {
+			logger.error("JWT claims string is empty: {}", e.getMessage());
+		}
+
+		return false;
+	}
 
 }

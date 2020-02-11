@@ -1,6 +1,6 @@
 package com.sg.stackovershow.entities;
 
-public enum Role {
+public enum ERole {
 
 	USER, ADMIN;
 	

@@ -51,7 +51,7 @@ public class PostController {
 		CreatePostDto postDto = new CreatePostDto(data.get("subject"), data.get("message"), data.get("username"));
 		User user = userService.findUserByUsername(data.get("username"));
 		Post newPost = new Post(data.get("subject"), data.get("message"), data.get("username"));
-		userService.savePost(user, newPost);
+		//userService.savePost(user, newPost);
 		postService.savePost(postDto);
 		return new ResponseEntity<>(postDto, HttpStatus.OK);
 	}
