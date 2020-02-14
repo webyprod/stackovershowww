@@ -67,9 +67,7 @@ public class User implements Serializable {
 	@OneToMany(cascade=CascadeType.ALL)
 	@JoinColumn(name = "userId")
 	private List<Post> posts;
-	
-//	@OneToMany
-//	private List<Comment> comments;
+
 	
 	public User() {}
 

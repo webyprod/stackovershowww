@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sg.stackovershow.dtos.CreatePostDto;
 import com.sg.stackovershow.entities.Post;
 import com.sg.stackovershow.entities.User;
+import com.sg.stackovershow.repositories.UserRepository;
 import com.sg.stackovershow.services.PostService;
 import com.sg.stackovershow.services.UserService;
 
@@ -31,8 +33,18 @@ public class PostController {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private UserRepository userRepo;
+	
 	@GetMapping("/posts/all")
 	public ResponseEntity<?> getAllPosts(){
+		List<Post> posts = postService.getPosts();
+		return new ResponseEntity<>(posts, HttpStatus.OK);
+	}
+	
+	@GetMapping("/admin/posts/all")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<?> getAllPostsForAmin(){
 		List<Post> posts = postService.getPosts();
 		return new ResponseEntity<>(posts, HttpStatus.OK);
 	}
@@ -51,7 +63,8 @@ public class PostController {
 		CreatePostDto postDto = new CreatePostDto(data.get("subject"), data.get("message"), data.get("username"));
 		User user = userService.findUserByUsername(data.get("username"));
 		Post newPost = new Post(data.get("subject"), data.get("message"), data.get("username"));
-		//userService.savePost(user, newPost);
+		user.addPosts(newPost);
+		userRepo.save(user);
 		postService.savePost(postDto);
 		return new ResponseEntity<>(postDto, HttpStatus.OK);
 	}

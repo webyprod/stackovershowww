@@ -13,7 +13,6 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
 
 
-
 public class Comment {
 	
 //	@Id
@@ -27,7 +26,7 @@ public class Comment {
 //	private String username;
 //
 //    private LocalDate published;
-
+//
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "userId")
 //    private User user;
