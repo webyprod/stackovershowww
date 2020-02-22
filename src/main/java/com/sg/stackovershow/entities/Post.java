@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -43,9 +44,9 @@ public class Post {
 
     private String username;
 
-//    @OneToMany
-//    @JoinColumn(name = "postId")
-//    private List<Comment> comments;
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinColumn(name = "postId")
+    private List<Comment> comments;
 	
     public Post() {}
 
@@ -55,7 +56,7 @@ public class Post {
 		this.message = message;
 		this.publishDate = LocalDate.now();
 		this.username = user;
-		//this.comments = new ArrayList<>();
+		this.comments = new ArrayList<>();
 	}
 
 	public Long getPostId() {
@@ -98,12 +99,12 @@ public class Post {
 		this.username = user;
 	}
 
-//	public List<Comment> getAnswers() {
-//		return this.comments;
-//	}
-//
-//	public void addAnswer(Comment comment) {
-//		this.comments.add(comment);
-//	}
+	public List<Comment> getAnswers() {
+		return this.comments;
+	}
+
+	public void addAnswer(Comment comment) {
+		this.comments.add(comment);
+	}
 
 }

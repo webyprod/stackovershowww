@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sg.stackovershow.dtos.CreateCommentDto;
 import com.sg.stackovershow.dtos.CreatePostDto;
+import com.sg.stackovershow.entities.Comment;
 import com.sg.stackovershow.entities.Post;
 import com.sg.stackovershow.entities.User;
 import com.sg.stackovershow.repositories.UserRepository;
@@ -65,8 +67,15 @@ public class PostController {
 		Post newPost = new Post(data.get("subject"), data.get("message"), data.get("username"));
 		user.addPosts(newPost);
 		userRepo.save(user);
-		//postService.savePost(postDto);
 		return new ResponseEntity<>(postDto, HttpStatus.OK);
+	}
+	
+	@PostMapping("/post/{id}/comment")
+	public ResponseEntity<?> savePost(@PathVariable("id") Long id, @RequestBody HashMap<String, String> data){
+		CreateCommentDto commentDto = new CreateCommentDto(data.get("texte"), data.get("username"));
+		Post post = postService.getPostById(id);
+		postService.saveComment(commentDto, post);
+		return new ResponseEntity<>(commentDto, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/post/{id}")

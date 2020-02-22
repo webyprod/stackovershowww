@@ -67,6 +67,10 @@ public class User implements Serializable {
 	@OneToMany(cascade=CascadeType.ALL)
 	@JoinColumn(name = "userId")
 	private List<Post> posts;
+	
+	@OneToMany(cascade=CascadeType.ALL)
+	@JoinColumn(name = "userId")
+	private List<Comment> comments;
 
 	
 	public User() {}
@@ -78,7 +82,7 @@ public class User implements Serializable {
 		this.email = email;
 		this.password = password;
 		posts = new ArrayList<>();
-		//comments = new ArrayList<>();
+		comments = new ArrayList<>();
 	}
 	
 	public Long getId() {
@@ -149,12 +153,12 @@ public class User implements Serializable {
 	}
 
 
-//	public List<Comment> getComments() {
-//		return comments;
-//	}
-//
-//
-//	public void addComments(Comment comment) {
-//		this.comments.add(comment);
-//	}	
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+
+	public void addComments(Comment comment) {
+	this.comments.add(comment);
+	}	
 }

@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sg.stackovershow.dtos.CreateCommentDto;
 import com.sg.stackovershow.dtos.CreatePostDto;
+import com.sg.stackovershow.entities.Comment;
 import com.sg.stackovershow.entities.Post;
 import com.sg.stackovershow.repositories.PostRepository;
 
@@ -20,6 +22,13 @@ public class PostService {
 		newPost.setMessage(postDto.getMessage());
 		newPost.setSubject(postDto.getSubject());
 		newPost.setUser(postDto.getUsername());
+		postRepo.save(newPost);
+	}
+	
+	public void saveComment(CreateCommentDto commentDto, Post post) {
+		Post newPost = post;
+		Comment newComment = new Comment(commentDto.getTexte(), commentDto.getUsername());
+		newPost.addAnswer(newComment);
 		postRepo.save(newPost);
 	}
 	

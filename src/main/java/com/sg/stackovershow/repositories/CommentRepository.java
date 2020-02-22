@@ -11,7 +11,7 @@ import com.sg.stackovershow.entities.User;
 
 
 
-public interface CommentRepository  {
+public interface CommentRepository extends JpaRepository<Comment, Long> {
 
 //	List<Comment> findByPost(Post post);
 //	
