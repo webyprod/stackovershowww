@@ -71,16 +71,19 @@ public class User implements Serializable {
 	@OneToMany(cascade=CascadeType.ALL)
 	@JoinColumn(name = "userId")
 	private List<Comment> comments;
+	
+	private String skill;
 
 	
 	public User() {}
 
-	public User(String name, String username, String email,String password) {
+	public User(String name, String username, String email,String password, String skill) {
 		super();
 		this.name = name;
 		this.username = username;
 		this.email = email;
 		this.password = password;
+		this.skill = skill;
 		posts = new ArrayList<>();
 		comments = new ArrayList<>();
 	}
@@ -151,7 +154,14 @@ public class User implements Serializable {
 	public void addPosts(Post post) {
 		this.posts.add(post);
 	}
+	
+	public String getSkill() {
+		return skill;
+	}
 
+	public void setSkill(String skill) {
+		this.skill = skill;
+	}
 
 	public List<Comment> getComments() {
 		return comments;

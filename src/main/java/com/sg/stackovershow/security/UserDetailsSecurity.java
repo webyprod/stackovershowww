@@ -32,19 +32,22 @@ public class UserDetailsSecurity implements UserDetails{
 	private String username;
 
 	private String email;
+	
+	private String skill;
 
 	@JsonIgnore
 	private String password;
 
 	private Collection<? extends GrantedAuthority> authorities;
 
-	public UserDetailsSecurity(Long id, String name, String username, String email, String password,
+	public UserDetailsSecurity(Long id, String name, String username, String email, String password, String skill,
 			Collection<? extends GrantedAuthority> authorities) {
 		this.id = id;
 		this.name = name;
 		this.username = username;
 		this.email = email;
 		this.password = password;
+		this.skill = skill;
 		this.authorities = authorities;
 	}
 
@@ -59,6 +62,7 @@ public class UserDetailsSecurity implements UserDetails{
 				user.getUsername(), 
 				user.getEmail(),
 				user.getPassword(), 
+				user.getSkill(),
 				authorities);
 	}
 
@@ -82,6 +86,10 @@ public class UserDetailsSecurity implements UserDetails{
 	@Override
 	public String getPassword() {
 		return password;
+	}
+
+	public String getSkill() {
+		return skill;
 	}
 
 	@Override

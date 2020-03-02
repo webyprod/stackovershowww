@@ -13,14 +13,16 @@ public class JwtResponseDto {
 	private String username;
 	private String email;
 	private String name;
+	private String skill;
 	private List<String> roles;
 
-	public JwtResponseDto(String accessToken, Long id, String username, String email, String name, List<String> roles) {
+	public JwtResponseDto(String accessToken, Long id, String username, String email, String name, String skill, List<String> roles) {
 		this.token = accessToken;
 		this.id = id;
 		this.username = username;
 		this.email = email;
 		this.name = name;
+		this.skill = skill;
 		this.roles = roles;
 	}
 
@@ -66,6 +68,14 @@ public class JwtResponseDto {
 
 	public String getUsername() {
 		return username;
+	}
+
+	public String getSkill() {
+		return skill;
+	}
+
+	public void setSkill(String skill) {
+		this.skill = skill;
 	}
 
 	public void setUsername(String username) {

@@ -22,6 +22,7 @@ public class PostService {
 		newPost.setMessage(postDto.getMessage());
 		newPost.setSubject(postDto.getSubject());
 		newPost.setUser(postDto.getUsername());
+		newPost.setCategories(postDto.getCategory());
 		postRepo.save(newPost);
 	}
 	

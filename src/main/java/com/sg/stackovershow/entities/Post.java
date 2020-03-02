@@ -40,7 +40,7 @@ public class Post {
     
     private LocalDate publishDate;
 
-    //private List<Category> categories;
+    private String category;
 
     private String username;
 
@@ -50,10 +50,11 @@ public class Post {
 	
     public Post() {}
 
-	public Post(String subject, String message, String user) {
+	public Post(String subject, String message, String user, String category) {
 		super();
 		this.subject = subject;
 		this.message = message;
+		this.category = category;
 		this.publishDate = LocalDate.now();
 		this.username = user;
 		this.comments = new ArrayList<>();
@@ -106,5 +107,15 @@ public class Post {
 	public void addAnswer(Comment comment) {
 		this.comments.add(comment);
 	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategories(String categories) {
+		this.category = categories;
+	}
+	
+	
 
 }

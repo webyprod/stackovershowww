@@ -21,17 +21,20 @@ public class CreateAccountDto {
     
     private Set<String> roles;
     
+    private String skill;
+    
     @NotBlank
     @Size(min = 6, max = 40)
     private String password;
     
     public CreateAccountDto() {}
 
-	public CreateAccountDto(String name, String username, String email, String password, Set<String> role) {
+	public CreateAccountDto(String username, String email, String password, String skill, Set<String> role) {
 		super();
 		this.name = name;
 		this.username = username;
 		this.email = email;
+		this.skill = skill;
 		this.password = password;
 		this.roles = role;
 	}
@@ -74,6 +77,14 @@ public class CreateAccountDto {
 	
 	public void setRole(Set<String> role) {
 		this.roles = role;
+	}
+
+	public String getSkill() {
+		return skill;
+	}
+
+	public void setSkill(String skill) {
+		this.skill = skill;
 	}
 	
 	

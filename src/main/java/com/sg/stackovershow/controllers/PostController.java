@@ -62,9 +62,9 @@ public class PostController {
 	
 	@PostMapping("/post/new")
 	public ResponseEntity<?> savePost(@RequestBody HashMap<String, String> data){
-		CreatePostDto postDto = new CreatePostDto(data.get("subject"), data.get("message"), data.get("username"));
+		CreatePostDto postDto = new CreatePostDto(data.get("subject"), data.get("message"), data.get("username"), data.get("category"));
 		User user = userService.findUserByUsername(data.get("username"));
-		Post newPost = new Post(data.get("subject"), data.get("message"), data.get("username"));
+		Post newPost = new Post(data.get("subject"), data.get("message"), data.get("username"), data.get("category"));
 		user.addPosts(newPost);
 		userRepo.save(user);
 		return new ResponseEntity<>(postDto, HttpStatus.OK);

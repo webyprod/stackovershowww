@@ -9,12 +9,15 @@ public class CreatePostDto {
 	
 	String username;
 	
+	String category;
+	
 	public CreatePostDto() {}
 	
-	public CreatePostDto(String subject, String message, String username) {
+	public CreatePostDto(String subject, String message, String username, String category) {
 		this.subject = subject;
 		this.message = message;
 		this.username = username;
+		this.category = category;
 	}
 
 	public String getSubject() {
@@ -40,6 +43,16 @@ public class CreatePostDto {
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+	
+	
 	
 	
 

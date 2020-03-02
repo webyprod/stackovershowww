@@ -74,7 +74,7 @@ public class AuthenticationController {
 		}
 		
 		// Create new user's account
-		User user = new User(create.getName(), create.getUsername(), create.getEmail(),encoder.encode(create.getPassword()));
+		User user = new User(create.getName(), create.getUsername(), create.getEmail(),encoder.encode(create.getPassword()), create.getSkill());
 		
 		Set<String> strRoles = create.getRole();
 		Set<Roles> roles = new HashSet<>();
@@ -111,6 +111,7 @@ public class AuthenticationController {
 				 userDetails.getUsername(), 
 				 userDetails.getEmail(), 
 				 userDetails.getName(),
+				 userDetails.getSkill(),
 				 roles));
     }
 
