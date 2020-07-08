@@ -3,6 +3,8 @@ package com.sg.stackovershow.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sg.stackovershow.entities.Post;
@@ -29,10 +32,12 @@ public class UserController {
 	@Autowired
 	private PostService postService;
 	
+	@Autowired
+	private UserRepository userRepo;
+	
 	@GetMapping("/users/all")
-	public ResponseEntity<?> getAll() {
-		List<User> users = userService.getUsers();
-		return new ResponseEntity<>(users, HttpStatus.OK);
+	public Page<User> getAll(@RequestParam(defaultValue="0") int page) {
+		return userRepo.findAll(PageRequest.of(page, 5));
 	}
 	
 	@GetMapping("/admin/users/all")

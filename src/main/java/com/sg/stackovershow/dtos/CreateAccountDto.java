@@ -29,7 +29,7 @@ public class CreateAccountDto {
     
     public CreateAccountDto() {}
 
-	public CreateAccountDto(String username, String email, String password, String skill, Set<String> role) {
+	public CreateAccountDto(String name, String username, String email, String password, String skill, Set<String> role) {
 		super();
 		this.name = name;
 		this.username = username;
